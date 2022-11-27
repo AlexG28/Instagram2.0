@@ -1,6 +1,7 @@
 <script>
   import svelteLogo from './assets/svelte.svg'
   import Counter from './lib/Counter.svelte'
+  import Post from './lib/Post.svelte'
 </script>
 
 <main>
@@ -29,6 +30,9 @@
   <h1 class="title" >
     Instagram 2.0
   </h1>
+
+  <Post />
+
 </main>
 
 <style>
