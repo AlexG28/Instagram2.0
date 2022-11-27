@@ -1,8 +1,8 @@
 <script>
-    import image1 from '../assets/image1.png'
+    export let image1;
+    export let posterUsername;
+    export let likes;
 
-    let posterUsername = "NASA";
-    let likes = 12;
     const likePost = () => {
         likes += 1
     }
@@ -26,8 +26,6 @@
         </button>
 
     </div>
-    
-
 </div>
 
 
@@ -36,6 +34,7 @@
         border-style: solid;
         border-color: rgb(73, 73, 73);
         border-radius: 8px;
+        margin: 3rem 0rem;
     }
 
     .postUsername{
