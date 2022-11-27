@@ -4,7 +4,7 @@
 </script>
 
 <main>
-  <div>
+  <!-- <div>
     <a href="https://vitejs.dev" target="_blank" rel="noreferrer"> 
       <img src="/vite.svg" class="logo" alt="Vite Logo" />
     </a>
@@ -24,11 +24,15 @@
 
   <p class="read-the-docs">
     Click on the Vite and Svelte logos to learn more
-  </p>
+  </p> -->
+
+  <h1 class="title" >
+    Instagram 2.0
+  </h1>
 </main>
 
 <style>
-  .logo {
+  /* .logo {
     height: 6em;
     padding: 1.5em;
     will-change: filter;
@@ -41,5 +45,20 @@
   }
   .read-the-docs {
     color: #888;
+  } */
+
+  .title{
+    /* Create the gradient. */
+    background-image: linear-gradient(45deg, #f3ec78, #af4261);
+    
+    /* Use the text as a mask for the background. */
+    /* This will show the gradient as a text color rather than element bg. */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    
+    position: absolute;
+    left: 3rem;
+    top: 0rem;
   }
+
 </style>
