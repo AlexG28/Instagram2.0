@@ -13,9 +13,9 @@
   </h1>
 
   <div class="postPanel">
-    <Post image1={image1} posterUsername={"NASA"} likes={12}/>
-    <Post image1={image2} posterUsername={"James Webb Space Telescope"} likes={19}/>
-    <Post image1={image3} posterUsername={"Christopher Nolan"} likes={1736}/>
+    <Post image1={image1} posterUsername={"NASA"} likes={0}/>
+    <Post image1={image2} posterUsername={"James Webb Space Telescope"} likes={0}/>
+    <Post image1={image3} posterUsername={"Christopher Nolan"} likes={0}/>
   </div>
 </main>
 
