@@ -1,4 +1,6 @@
 <script>
+  import { supabase } from './supabaseClient'
+
   import Post from './lib/Post.svelte'
 
   import image1 from './assets/image1.png'
