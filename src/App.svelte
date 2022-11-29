@@ -1,4 +1,6 @@
 <script>
+  import { onMount } from 'svelte'
+
   import { supabase } from './supabaseClient'
 
   import Post from './lib/Post.svelte'
@@ -6,6 +8,67 @@
   import image1 from './assets/image1.png'
   import image2 from './assets/image2.png'
   import image3 from './assets/image3.jpg'
+
+  let loading = false
+  let results = null
+
+  let testImage = null
+
+  
+  const getData = async () => {
+    try {
+      loading = true
+      const {data,error,status} = await supabase
+        .from('Posts')
+        .select()
+
+      if (error && status !== 406) throw error
+
+      if (data) {
+        results = data
+        console.log(results)
+      }
+
+    } catch (error){
+      if (error instanceof Error){
+        alert(error.message)
+      }
+    } finally {
+      loading = false
+    }
+  }
+
+  const getImage = async () => {
+    try {
+      loading = true
+      const { data, error } = await supabase
+        .storage
+        .from('images')
+        .download('image1.png')
+
+      if (error) throw error
+
+      if (data) {
+        testImage = data
+        console.log(testImage)
+      }
+
+    } catch (error){
+      if (error instanceof Error){
+        alert(error.message)
+      }
+    } finally {
+      loading = false
+    }
+  }
+
+
+
+  onMount(() => {
+    getData()
+    getImage()
+  })
+
 
 </script>
 
