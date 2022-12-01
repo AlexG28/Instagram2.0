@@ -1,11 +1,50 @@
 <script>
-    export let image1;
+    import { onMount } from "svelte";
+    import { supabase } from "../supabaseClient";
+
+    export let imageName;
     export let posterUsername;
     export let likes;
 
+    let testImage = null;
+    
     const likePost = () => {
-        likes += 1
+    likes += 1
     }
+
+    const getImage = async () => {
+    try {
+      const { data: blob, error } = await supabase
+        .storage
+        .from('images')
+        .download('MainImages/' + imageName)
+
+      if (error) throw error
+
+      if (blob) {
+
+        console.log(blob)
+
+        let imageFile = new File([blob], "imageFile1", { type: blob.type })
+        
+        const fr = new FileReader();
+        fr.readAsDataURL(imageFile)
+        fr.addEventListener('load', ()=>{
+          testImage = fr.result
+        })
+      }
+
+    } catch (error){
+      if (error instanceof Error){
+        alert(error.message)
+      }
+    }
+  }
+
+  onMount(() => {
+    getImage()
+  })
+
 </script>
 
 
@@ -14,7 +53,8 @@
     <h2 class="postUsername" >
         {posterUsername}
     </h2>
-    <img src={image1} class="postPicture" alt="Not Loaded" />
+    
+    <img src={testImage} class="postPicture" alt="Not Loaded" />
     
     <div class="likebar">
         <h3 class="numOfLikes" >
