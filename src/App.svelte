@@ -1,20 +1,12 @@
 <script>
   import { onMount } from 'svelte'
-
   import { supabase } from './supabaseClient'
 
   import Post from './lib/Post.svelte'
 
-  import image1 from './assets/image1.png'
-  import image2 from './assets/image2.png'
-  import image3 from './assets/image3.jpg'
-
   let loading = false
   let results = null
 
-  let testImage = null
-
-  
   const getData = async () => {
     try {
       loading = true
@@ -38,37 +30,30 @@
     }
   }
 
-  const getImage = async () => {
-    try {
-      loading = true
-      const { data, error } = await supabase
-        .storage
-        .from('images')
-        .download('image1.png')
-
-      if (error) throw error
-
-      if (data) {
-        testImage = data
-        console.log(testImage)
+  const getImageList = async () => {
+    const imageNames = []
+    const { data, error } = await supabase
+      .storage
+      .from('images')
+      .list('MainImages')
+    
+    if (error) throw error
+  
+    if (data) {
+      for(let i = 1; i<data.length; i++){
+        imageNames.push(data[i].name)
       }
-
-    } catch (error){
-      if (error instanceof Error){
-        alert(error.message)
-      }
-    } finally {
-      loading = false
     }
+    console.log(imageNames)
+    console.log("crazyyyy")
+    return imageNames
+
   }
 
-
-
-  onMount(() => {
-    getData()
-    getImage()
+  onMount(() =>{
+    // getData()
+    // getImageList()
   })
-
 
 </script>
 
@@ -78,9 +63,9 @@
   </h1>
 
   <div class="postPanel">
-    <Post image1={image1} posterUsername={"NASA"} likes={0}/>
-    <Post image1={image2} posterUsername={"James Webb Space Telescope"} likes={0}/>
-    <Post image1={image3} posterUsername={"Christopher Nolan"} likes={0}/>
+    <Post imageName={"image1.png"} posterUsername={"Alex"} likes={69} />
+    <Post imageName={"image2.png"} posterUsername={"Alex"} likes={69} />
+    <Post imageName={"image3.jpg"} posterUsername={"Alex"} likes={69} />
   </div>
 </main>
 
