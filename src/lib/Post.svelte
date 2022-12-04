@@ -9,7 +9,7 @@
     let testImage = null;
     
     const likePost = () => {
-    likes += 1
+      likes += 1
     }
 
     const getImage = async () => {

@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from 'svelte'
   import { supabase } from './supabaseClient'
 
   import Post from './lib/Post.svelte'
@@ -30,7 +29,7 @@
     }
   }
 
-  const getImageList = async () => {
+  async function getImageList() {
     const imageNames = []
     const { data, error } = await supabase
       .storage
@@ -40,20 +39,16 @@
     if (error) throw error
   
     if (data) {
-      for(let i = 1; i<data.length; i++){
+      for(let i = 1; i < data.length; i++){
         imageNames.push(data[i].name)
       }
     }
-    console.log(imageNames)
-    console.log("crazyyyy")
-    return imageNames
 
+    return imageNames
   }
 
-  onMount(() =>{
-    // getData()
-    // getImageList()
-  })
+
+  let imageList = getImageList()
 
 </script>
 
@@ -63,9 +58,11 @@
   </h1>
 
   <div class="postPanel">
-    <Post imageName={"image1.png"} posterUsername={"Alex"} likes={69} />
-    <Post imageName={"image2.png"} posterUsername={"Alex"} likes={69} />
-    <Post imageName={"image3.jpg"} posterUsername={"Alex"} likes={69} />
+    {#await imageList then value} 
+      {#each value as fileName}
+        <Post imageName={fileName} posterUsername={"Alex"} likes={69} />
+      {/each}
+    {/await}
   </div>
 </main>
 
