@@ -7,4 +7,8 @@ This is the frontend of Instagram 2.0, a shameless copy of Instagram.
 
 ## Try it out
 
-To run this website on your computer, clone this repo and run  `npm install` followed by `npm dev run`.
+To run this website on your computer, clone this repo and run  `npm install` followed by `npm run dev`.
+
+## Run unit tests
+
+To run the e2e unit tests, run `npm run ci`
