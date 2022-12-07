@@ -12,7 +12,9 @@ jobs:
       VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
       # PROJECT_ID: nnhiufnpncvtpbvwlgsc
     
-    run: echo ${{ secrets.VITE_SUPABASE_URL }}
+    - name: 'Create env file'
+      run: |
+        echo "${{ secrets.VITE_SUPABASE_URL }}"
 
     steps:
     - name: Checkout
