@@ -11,7 +11,8 @@ jobs:
       VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
       VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
       # PROJECT_ID: nnhiufnpncvtpbvwlgsc
-
+    
+    run: echo ${{ secrets.VITE_SUPABASE_URL }}
 
     steps:
     - name: Checkout
@@ -35,5 +36,7 @@ jobs:
     # - name: Run Tests
     #   run: npm run ci
     # https://www.youtube.com/watch?v=rOLyOsBR1Uc
+
+    # https://stackoverflow.com/questions/60176044/how-do-i-use-an-env-file-with-github-actions
     
         
