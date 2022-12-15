@@ -9,10 +9,9 @@
     "preview": "vite preview",
     "cypress:open": "cypress open",
     "cy:run": "cypress run -b chrome",
-    
     "start-server": "npm run dev",
     "test": "npm run cy:run",
-    "ci": "start-server-and-test start-server http://localhost:5173 test" 
+    "ci": "start-server-and-test start-server http://localhost:5173 test"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.1.0",

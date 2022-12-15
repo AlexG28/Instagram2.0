@@ -2,6 +2,7 @@
   import { supabase } from './supabaseClient'
 
   import Post from './lib/Post.svelte'
+  import SignIn from './lib/SignIn.svelte'
 
   let loading = false
   let results = null
@@ -47,6 +48,12 @@
     return imageNames
   }
 
+  async function authenticateUser(){
+    let {data, error} = await supabase.auth.signInWithPassword({
+      email: "alex.gyumushyan@gmail.com",
+      password: "123456789"
+    })
+  }
 
   let imageList = getImageList()
 
@@ -56,6 +63,9 @@
   <h1 class="title" >
     Instagram 2.0
   </h1>
+
+
+  <SignIn />
 
   <div class="postPanel">
     {#await imageList then value} 
