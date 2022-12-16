@@ -4,12 +4,13 @@
   import Post from './lib/Post.svelte'
   import SignIn from './lib/SignIn.svelte'
 
-  let loading = false
+
+  let loggedIn = false
+
   let results = null
 
   const getData = async () => {
     try {
-      loading = true
       const {data,error,status} = await supabase
         .from('Posts')
         .select()
@@ -26,7 +27,6 @@
         alert(error.message)
       }
     } finally {
-      loading = false
     }
   }
 
@@ -64,8 +64,11 @@
     Instagram 2.0
   </h1>
 
-
-  <SignIn />
+  {#if loggedIn == true}
+    <p>Logged in</p>
+  {:else}
+    <SignIn bind:loggedIn={loggedIn}/>
+  {/if}
 
   <div class="postPanel">
     {#await imageList then value} 

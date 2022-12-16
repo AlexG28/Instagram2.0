@@ -1,8 +1,11 @@
 <script>
+    export let loggedIn = false
+
     let email = ""
     let password = ""
 
     function signIn() {
+        loggedIn = true
         console.log(email)
         console.log(password)
     }
