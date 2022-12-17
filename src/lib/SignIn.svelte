@@ -1,13 +1,41 @@
 <script>
+
+    import { supabase } from '../supabaseClient'
+
     export let loggedIn = false
 
     let email = ""
     let password = ""
 
-    function signIn() {
-        loggedIn = true
-        console.log(email)
-        console.log(password)
+    async function signUp() {
+        
+        let { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password
+        })
+
+        if (error){
+            console.log(error)
+        } else{
+            alert("Please confirm your email")
+        }
+    }
+
+    async function signIn() {
+        
+        let { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        })
+
+        if (error){
+            alert("Invalid login credentials")
+
+        } else{
+            email = ""
+            password = ""
+            loggedIn = true
+        }
     }
 
 </script>
@@ -18,6 +46,10 @@
 
     <input bind:value={email}>
     <input bind:value={password}>
+
+    <button on:click={signUp}>
+        Sign Up
+    </button>
 
     <button on:click={signIn}>
         Sign In

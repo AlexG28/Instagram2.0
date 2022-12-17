@@ -6,7 +6,6 @@
 
 
   let loggedIn = false
-
   let results = null
 
   const getData = async () => {
@@ -31,6 +30,7 @@
   }
 
   async function getImageList() {
+   
     const imageNames = []
     const { data, error } = await supabase
       .storage
@@ -38,7 +38,7 @@
       .list('MainImages')
     
     if (error) throw error
-  
+
     if (data) {
       for(let i = 1; i < data.length; i++){
         imageNames.push(data[i].name)
@@ -46,13 +46,6 @@
     }
 
     return imageNames
-  }
-
-  async function authenticateUser(){
-    let {data, error} = await supabase.auth.signInWithPassword({
-      email: "alex.gyumushyan@gmail.com",
-      password: "123456789"
-    })
   }
 
   let imageList = getImageList()
@@ -67,15 +60,20 @@
   {#if loggedIn == true}
     <p>Logged in</p>
   {:else}
-    <SignIn bind:loggedIn={loggedIn}/>
+    <SignIn bind:loggedIn={loggedIn} />
   {/if}
 
   <div class="postPanel">
-    {#await imageList then value} 
-      {#each value as fileName}
-        <Post imageName={fileName} posterUsername={"Alex"} likes={69} />
-      {/each}
-    {/await}
+    {#if loggedIn == true}
+      {#await imageList then value} 
+        {#each value as fileName}
+          <Post imageName={fileName} posterUsername={"Alex"} likes={69} />
+        {/each}
+      {/await}
+    {/if}
+    <p>
+      test bababaab
+    </p>
   </div>
 </main>
 

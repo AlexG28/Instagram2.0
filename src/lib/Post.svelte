@@ -13,32 +13,33 @@
     }
 
     const getImage = async () => {
-    try {
-      const { data: blob, error } = await supabase
-        .storage
-        .from('images')
-        .download('MainImages/' + imageName)
+      console.log("here11231231")
+      try {
+        const { data: blob, error } = await supabase
+          .storage
+          .from('images')
+          .download('MainImages/' + imageName)
 
-      if (error) throw error
+        if (error) throw error
 
-      if (blob) {
+        if (blob) {
 
-        console.log(blob)
+          console.log(blob)
 
-        let imageFile = new File([blob], "imageFile1", { type: blob.type })
-        
-        const fr = new FileReader();
-        fr.readAsDataURL(imageFile)
-        fr.addEventListener('load', ()=>{
-          testImage = fr.result
-        })
+          let imageFile = new File([blob], "imageFile1", { type: blob.type })
+          
+          const fr = new FileReader();
+          fr.readAsDataURL(imageFile)
+          fr.addEventListener('load', ()=>{
+            testImage = fr.result
+          })
+        }
+
+      } catch (error){
+        if (error instanceof Error){
+          alert(error.message)
+        }
       }
-
-    } catch (error){
-      if (error instanceof Error){
-        alert(error.message)
-      }
-    }
   }
 
   onMount(() => {
