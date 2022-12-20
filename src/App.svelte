@@ -64,13 +64,13 @@
   {/if}
 
   <div class="postPanel">
-    {#if loggedIn == true}
-      {#await imageList then value} 
-        {#each value as fileName}
-          <Post imageName={fileName} posterUsername={"Alex"} likes={69} />
-        {/each}
-      {/await}
-    {/if}
+
+    {#await imageList then value} 
+      {#each value as fileName}
+        <Post imageName={fileName} posterUsername={"Alex"} likes={69} />
+      {/each}
+    {/await}
+
     <p>
       test bababaab
     </p>
