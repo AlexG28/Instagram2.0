@@ -70,10 +70,6 @@
         <Post imageName={fileName} posterUsername={"Alex"} likes={69} />
       {/each}
     {/await}
-
-    <p>
-      test bababaab
-    </p>
   </div>
 </main>
 

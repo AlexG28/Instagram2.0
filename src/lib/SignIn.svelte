@@ -44,14 +44,14 @@
 
 <div>
 
-    <input bind:value={email}>
-    <input bind:value={password}>
+    <input id="emailTextBox" bind:value={email}>
+    <input id="passwordTextBox" bind:value={password}>
 
-    <button on:click={signUp}>
+    <button id="signUpButton" on:click={signUp}>
         Sign Up
     </button>
 
-    <button on:click={signIn}>
+    <button id="SignInButton" on:click={signIn}>
         Sign In
     </button>
 
