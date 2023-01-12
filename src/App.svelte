@@ -6,6 +6,7 @@
 
 
   let loggedIn = false
+  let sessionInfo
   let results = null
 
   const getData = async () => {
@@ -29,26 +30,29 @@
     }
   }
 
-  async function getImageList() {
-   
-    const imageNames = []
+  async function getImageNamesFromAccout() {
     const { data, error } = await supabase
       .storage
       .from('images')
-      .list('MainImages')
-    
-    if (error) throw error
+      .list(sessionInfo.user.id)
+    if (error) throw error 
+    return data
+  }
+
+  async function getImageList() {
+    console.log("bababa")
+    console.log(sessionInfo.user.id)
+    const imageNames = []
+    let data = await getImageNamesFromAccout()
 
     if (data) {
-      for(let i = 1; i < data.length; i++){
+      for(let i = 1; i < data.length; i++)  {
         imageNames.push(data[i].name)
       }
     }
 
     return imageNames
   }
-
-  let imageList = getImageList()
 
 </script>
 
@@ -60,16 +64,17 @@
   {#if loggedIn == true}
     <p>Logged in</p>
   {:else}
-    <SignIn bind:loggedIn={loggedIn} />
+    <SignIn bind:loggedIn={loggedIn} bind:sessionInfo={sessionInfo}/>
   {/if}
 
   <div class="postPanel">
-
-    {#await imageList then value} 
-      {#each value as fileName}
-        <Post imageName={fileName} posterUsername={"Alex"} likes={69} />
-      {/each}
-    {/await}
+    {#if sessionInfo != null}
+      {#await getImageList() then value} 
+        {#each value as fileName}
+          <Post imageName={fileName} posterUsername={"Alex"} sessionInfo={sessionInfo} likes={69} />
+        {/each}
+      {/await} 
+    {/if}
   </div>
 </main>
 

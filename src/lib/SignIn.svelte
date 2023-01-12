@@ -4,6 +4,8 @@
 
     export let loggedIn = false
 
+    export let sessionInfo
+
     let email = ""
     let password = ""
 
@@ -32,6 +34,7 @@
             alert("Invalid login credentials")
 
         } else{
+            sessionInfo = data
             email = ""
             password = ""
             loggedIn = true

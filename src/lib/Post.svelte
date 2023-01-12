@@ -4,6 +4,7 @@
 
     export let imageName;
     export let posterUsername;
+    export let sessionInfo;
     export let likes;
 
     let testImage = null;
@@ -14,11 +15,13 @@
 
     const getImage = async () => {
       console.log("here11231231")
+      console.log(sessionInfo.user.id + "/" + imageName)
       try {
+
         const { data: blob, error } = await supabase
           .storage
           .from('images')
-          .download('MainImages/' + imageName)
+          .download(sessionInfo.user.id + "/" + imageName)
 
         if (error) throw error
 
