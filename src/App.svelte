@@ -39,9 +39,7 @@
     return data
   }
 
-  async function getImageList() {
-    console.log("bababa")
-    console.log(sessionInfo.user.id)
+  async function getImageNameList() {
     const imageNames = []
     let data = await getImageNamesFromAccout()
 
@@ -69,7 +67,7 @@
 
   <div class="postPanel">
     {#if sessionInfo != null}
-      {#await getImageList() then value} 
+      {#await getImageNameList() then value} 
         {#each value as fileName}
           <Post imageName={fileName} posterUsername={"Alex"} sessionInfo={sessionInfo} likes={69} />
         {/each}

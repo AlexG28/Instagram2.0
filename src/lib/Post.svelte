@@ -3,18 +3,17 @@
     import { supabase } from "../supabaseClient";
 
     export let imageName;
-    export let posterUsername;
     export let sessionInfo;
-    export let likes;
+    export let posterUsername; // temporary
+    export let likes; // temporary
 
-    let testImage = null;
+    let imageValue = null;
     
     const likePost = () => {
       likes += 1
     }
 
     const getImage = async () => {
-      console.log("here11231231")
       console.log(sessionInfo.user.id + "/" + imageName)
       try {
 
@@ -34,7 +33,7 @@
           const fr = new FileReader();
           fr.readAsDataURL(imageFile)
           fr.addEventListener('load', ()=>{
-            testImage = fr.result
+            imageValue = fr.result
           })
         }
 
@@ -52,13 +51,12 @@
 </script>
 
 
-
 <div class="post">
     <h2 class="postUsername" >
         {posterUsername}
     </h2>
     
-    <img src={testImage} class="postPicture" alt="Not Loaded" />
+    <img src={imageValue} class="postPicture" alt="Not Loaded" />
     
     <div class="likebar">
         <h3 class="numOfLikes" >
