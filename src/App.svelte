@@ -3,7 +3,7 @@
 
   import Post from './lib/Post.svelte'
   import SignIn from './lib/SignIn.svelte'
-
+  import Upload from './lib/Upload.svelte';
 
   let loggedIn = false
   let sessionInfo
@@ -61,6 +61,7 @@
 
   {#if loggedIn == true}
     <p>Logged in</p>
+    <Upload sessionInfo={sessionInfo}/>
   {:else}
     <SignIn bind:loggedIn={loggedIn} bind:sessionInfo={sessionInfo}/>
   {/if}
