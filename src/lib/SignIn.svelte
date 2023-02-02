@@ -46,7 +46,7 @@
 
 
 <div>
-
+    <h2 class="logInOrSignUp"> Log In or Sign Up </h2>
     <input id="emailTextBox" bind:value={email}>
     <input id="passwordTextBox" bind:value={password}>
 
@@ -59,3 +59,9 @@
     </button>
 
 </div>
+
+<style>
+    .logInOrSignUp{
+        font-size: 3rem;
+    }
+</style>

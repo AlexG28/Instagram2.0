@@ -9,7 +9,7 @@
         let myuuid = uuidv4();
         console.log(myuuid)
         let image = e.target.files[0];
-        let upload_path = sessionInfo.user.id + "/" + myuuid + ".jpg";
+        let upload_path = sessionInfo.user.id + "/" + myuuid;
         console.log(upload_path)
         
         const { data, error } = await supabase
