@@ -9,7 +9,6 @@
         let myuuid = uuidv4();
         console.log(myuuid)
         let image = e.target.files[0];
-        // need to generate unique ID 
         let upload_path = sessionInfo.user.id + "/" + myuuid + ".jpg";
         console.log(upload_path)
         
@@ -29,7 +28,12 @@
 </script>
 
 <div>
-    <h1>Upload image</h1>
-    <div on:click={()=>{fileinput.click();}}> choose image </div>
+    <div class="uploadLabel" on:click={()=>{fileinput.click();}}> Click here to upload an image </div>
     <input style="display:none" type="file" accept=".jpg, .jpeg, .png" on:change={(e)=>onFileSelected(e)} bind:this={fileinput} >
 </div>
+<style>
+    .uploadLabel{
+        font-size: 2rem;
+        cursor: pointer;
+    }
+</style>
