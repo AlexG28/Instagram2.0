@@ -49,7 +49,7 @@
     {#if sessionInfo != null}
       {#await getImageNameList() then value} 
         {#each value as fileName}
-          <Post imageName={fileName} posterUsername={"Alex"} sessionInfo={sessionInfo} likes={69} />
+          <Post imageName={fileName} sessionInfo={sessionInfo} />
         {/each}
       {/await} 
     {/if}
