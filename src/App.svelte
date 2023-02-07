@@ -7,45 +7,24 @@
 
   let loggedIn = false
   let sessionInfo
-  let results = null
 
-  const getData = async () => {
-    try {
-      const {data,error,status} = await supabase
+  async function getImageIDsFromPostsTable(){
+      const { data, error } = await supabase
         .from('Posts')
-        .select()
-
-      if (error && status !== 406) throw error
-
-      if (data) {
-        results = data
-        console.log(results)
-      }
-
-    } catch (error){
-      if (error instanceof Error){
-        alert(error.message)
-      }
-    } finally {
-    }
-  }
-
-  async function getImageNamesFromAccout() {
-    const { data, error } = await supabase
-      .storage
-      .from('images')
-      .list(sessionInfo.user.id)
-    if (error) throw error 
-    return data
+        .select('imageID')
+      if (error) throw error 
+      return data 
   }
 
   async function getImageNameList() {
     const imageNames = []
-    let data = await getImageNamesFromAccout()
+    let postIDs = await getImageIDsFromPostsTable()
+    console.log("PostIDs: ")
+    console.log(postIDs)
 
-    if (data) {
-      for(let i = 1; i < data.length; i++)  {
-        imageNames.push(data[i].name)
+    if (postIDs) {
+      for (let i = 0; i < postIDs.length; i++){
+        imageNames.push(postIDs[i].imageID)
       }
     }
 
@@ -70,7 +49,7 @@
     {#if sessionInfo != null}
       {#await getImageNameList() then value} 
         {#each value as fileName}
-          <Post imageName={fileName} posterUsername={"Alex"} sessionInfo={sessionInfo} likes={69} />
+          <Post imageName={fileName} sessionInfo={sessionInfo} />
         {/each}
       {/await} 
     {/if}

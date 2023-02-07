@@ -4,17 +4,29 @@
 
     export let imageName;
     export let sessionInfo;
-    export let posterUsername; // temporary
-    export let likes; // temporary
-
+    
+    let posterUsername;
+    let likes;
     let imageValue = null;
     
     const likePost = () => {
       likes += 1
     }
 
+    async function getMetadata() {
+      const {data, error} = await supabase
+        .from('Posts')
+        .select('*')
+        .eq('imageID', imageName)
+        .limit(1)
+
+      if (error) throw error
+      
+      likes = data[0].likes
+      posterUsername = data[0].title
+    }
+
     const getImage = async () => {
-      console.log(sessionInfo.user.id + "/" + imageName)
       try {
 
         const { data: blob, error } = await supabase
@@ -25,12 +37,9 @@
         if (error) throw error
 
         if (blob) {
-
-          console.log(blob)
-
           let imageFile = new File([blob], "imageFile1", { type: blob.type })
           
-          const fr = new FileReader();
+          const fr = new FileReader(); 
           fr.readAsDataURL(imageFile)
           fr.addEventListener('load', ()=>{
             imageValue = fr.result
@@ -46,6 +55,7 @@
 
   onMount(() => {
     getImage()
+    getMetadata()
   })
 
 </script>
@@ -56,7 +66,7 @@
         {posterUsername}
     </h2>
     
-    <img src={imageValue} class="postPicture" alt="Not Loaded" />
+    <img src={imageValue} class="postPicture" alt="Loading" />
     
     <div class="likebar">
         <h3 class="numOfLikes" >

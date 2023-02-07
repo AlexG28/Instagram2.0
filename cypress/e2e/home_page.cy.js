@@ -24,11 +24,11 @@ describe(
             cy.get("#passwordTextBox").type(Cypress.env('TEST_PASSWORD'))
             cy.get("#SignInButton").click()
     
-            cy.contains("Alex")
+            cy.contains("NASA")
     
-            cy.contains("69 Likes")
+            cy.contains("0 Likes")
             cy.contains("Like this post").click()
-            cy.contains("70 Likes")
+            cy.contains("1 Likes")
         })
     }
 )
