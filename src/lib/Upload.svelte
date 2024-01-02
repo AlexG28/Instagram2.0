@@ -44,7 +44,7 @@
 
 <div>
     <input class="titleTextBox" bind:value={title}>
-    <div class="uploadLabel" on:click={()=>{fileinput.click();}}> Click here to upload an image </div>
+    <div class="uploadLabel" on:click={()=>{fileinput.click();}}  on:keydown={()=>{fileinput.click();}} > Click here to upload an image </div>
     <input style="display:none" type="file" accept=".jpg, .jpeg, .png" on:change={(e)=>onFileSelected(e)} bind:this={fileinput} >
 </div>
 <style>
