@@ -2,7 +2,7 @@ describe(
     'Login Test', 
     {
         env: {
-            TEST_EMAIL:"alex.gyumushyan@gmail.com",
+            TEST_EMAIL:"testemail@gmail.com",
             TEST_PASSWORD:"123456"
         },
     },
