@@ -15,7 +15,7 @@
 
     async function getMetadata() {
       const {data, error} = await supabase
-        .from('Posts')
+        .from('posts')
         .select('*')
         .eq('imageID', imageName)
         .limit(1)
@@ -32,7 +32,7 @@
         const { data: blob, error } = await supabase
           .storage
           .from('images')
-          .download(sessionInfo.user.id + "/" + imageName)
+          .download("postImages" + "/" + imageName)
 
         if (error) throw error
 

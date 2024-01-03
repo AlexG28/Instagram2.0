@@ -10,7 +10,7 @@
     
     async function addPostTitleToTable(uuid) {
         const { data, error } = await supabase
-            .from('Posts')
+            .from('posts')
             .insert([
                 {
                     'title': title,

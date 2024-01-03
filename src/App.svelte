@@ -8,9 +8,9 @@
   let loggedIn = false
   let sessionInfo
 
-  async function getImageIDsFromPostsTable(){
+  async function getImageIDsFrompostsTable(){
       const { data, error } = await supabase
-        .from('Posts')
+        .from('posts')
         .select('imageID')
       if (error) throw error 
       return data 
@@ -18,7 +18,7 @@
 
   async function getImageNameList() {
     const imageNames = []
-    let postIDs = await getImageIDsFromPostsTable()
+    let postIDs = await getImageIDsFrompostsTable()
     console.log("PostIDs: ")
     console.log(postIDs)
 

@@ -3,7 +3,6 @@
     import { supabase } from '../supabaseClient'
 
     export let loggedIn = false
-
     export let sessionInfo
 
     let email = ""
@@ -11,15 +10,32 @@
 
     async function signUp() {
         
-        let { data, error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
             email: email,
             password: password
         })
-
+        
         if (error){
             console.log(error)
-        } else{
-            alert("Please confirm your email")
+        }
+
+        sessionInfo = data.session
+
+        addUserToTable()
+    }
+
+    async function addUserToTable() {
+        const { data, error } = await supabase
+            .from('users')
+            .insert([
+                {
+                    'id': sessionInfo.user.id, 
+                    'created_at': ((new Date()).toISOString()).toLocaleString()
+                }
+            ])
+
+        if (error) {
+            console.log(error)
         }
     }
 
