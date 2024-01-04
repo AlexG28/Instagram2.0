@@ -7,6 +7,7 @@
     let posterUsername;
     let likes;
     let imageValue = null;
+    let description = null
     
     const likePost = () => {
       likes += 1
@@ -23,6 +24,7 @@
       
       likes = data[0].likes
       posterUsername = data[0].title
+      description = data[0].description
     }
 
     const getImage = async () => {
@@ -75,6 +77,12 @@
         <button class="likeButton" on:click={likePost}>
             Like this post
         </button>
+
+        <h2>
+          {#if description != null}
+            {description}
+          {/if}
+        </h2>
 
     </div>
 </div>
