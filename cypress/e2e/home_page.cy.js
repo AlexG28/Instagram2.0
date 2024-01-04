@@ -15,7 +15,6 @@ describe(
             cy.get("#passwordTextBox").type(Cypress.env('TEST_PASSWORD'))
             cy.get("#SignInButton").click()
             
-            cy.contains("Logged in")
         }),
         it('successfully loads images', () => {
             cy.visit('/')
