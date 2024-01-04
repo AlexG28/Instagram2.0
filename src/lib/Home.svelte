@@ -4,7 +4,7 @@
     import {push} from 'svelte-spa-router'
     import { loggedIn, sessionInfo } from './store'
     import Post from "./Post.svelte";
-    import Navbar from "./Navbar.svelte";
+    import Navbar from "../components/Navbar.svelte";
 
     onMount(() => {
         if (!($loggedIn)){
@@ -76,4 +76,4 @@
       margin-top: 30%;
     }
   
-  </style>
+</style>

@@ -2,7 +2,7 @@
     import {v4 as uuidv4} from 'uuid';
     import { supabase } from "../supabaseClient";
     import { sessionInfo } from './store';
-    import Navbar from './Navbar.svelte';
+    import Navbar from '../components/Navbar.svelte';
 
 
     let fileinput;
