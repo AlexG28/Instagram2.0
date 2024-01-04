@@ -6,7 +6,7 @@
   import { loggedIn } from "./lib/store";
 
   import Home from "./lib/Home.svelte"
-  import SignIn from "./lib/Signin.svelte"
+  import SignIn from "./lib/SignIn.svelte"
   import Upload from "./lib/Upload.svelte"
 
   let routes = {
