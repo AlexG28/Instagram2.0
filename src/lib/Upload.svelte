@@ -9,6 +9,7 @@
     let title;
     let description;
     let image; 
+    let localImage;
 
     async function addPostTitleToTable(uuid) {
         const { data, error } = await supabase
@@ -44,14 +45,20 @@
         if (error) throw error
         
         push("/");
-        
     }
 
     async function saveImage(e) {
         image = e.target.files[0]
+        displayImage(image)
     }
 
-
+    async function displayImage(imageFile){
+        const fr = new FileReader(); 
+        fr.readAsDataURL(imageFile)
+        fr.addEventListener('load', ()=>{
+            localImage = fr.result
+        })
+    }
 
 </script>
 
@@ -67,6 +74,10 @@
             <label for="description">Description:</label>
             <input class="descriptionTextBox" bind:value={description}>
         </div>
+
+        {#if localImage != null}
+            <img src={localImage} class="postPicture" alt="Loading" />
+        {/if}
 
         <div>
             <div class="uploadLabel" on:click={()=>{fileinput.click()}}  on:keydown={()=>{fileinput.click()}} > Click here to upload an image </div>
@@ -89,5 +100,9 @@
 
     .titleTextBox{
         margin-bottom: 1rem;
+    }
+
+    .postPicture{
+        width: 200px;
     }
 </style>

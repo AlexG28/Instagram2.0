@@ -39,7 +39,7 @@
 
         if (blob) {
           let imageFile = new File([blob], "imageFile1", { type: blob.type })
-          
+          console.log(imageFile)
           const fr = new FileReader(); 
           fr.readAsDataURL(imageFile)
           fr.addEventListener('load', ()=>{
