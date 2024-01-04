@@ -1,9 +1,7 @@
 <script>
-
-    import { supabase } from '../supabaseClient'
-
-    export let loggedIn = false
-    export let sessionInfo
+    import { supabase } from '../supabaseClient' 
+    import { loggedIn, sessionInfo } from './store'
+    import {push} from 'svelte-spa-router'
 
     let email = ""
     let password = ""
@@ -19,9 +17,16 @@
             console.log(error)
         }
 
-        sessionInfo = data.session
-
+        sessionInfo.set(data.session)
+        loggedIn.set(true)
+        
+        console.log("The session infoes are: \n")
+        console.log(sessionInfo)
+        console.log($sessionInfo)
+        
         addUserToTable()
+
+        push("/")
     }
 
     async function addUserToTable() {
@@ -29,7 +34,7 @@
             .from('users')
             .insert([
                 {
-                    'id': sessionInfo.user.id, 
+                    'id': ($sessionInfo)['user'].id, 
                     'created_at': ((new Date()).toISOString()).toLocaleString()
                 }
             ])
@@ -50,10 +55,12 @@
             alert("Invalid login credentials")
 
         } else{
-            sessionInfo = data
+            sessionInfo.set(data.session)
             email = ""
             password = ""
-            loggedIn = true
+            loggedIn.set(true)
+
+            push("/")
         }
     }
 

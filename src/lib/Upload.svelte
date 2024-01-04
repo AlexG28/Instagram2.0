@@ -1,12 +1,12 @@
 <script>
     import {v4 as uuidv4} from 'uuid';
     import { supabase } from "../supabaseClient";
-    
-    export let sessionInfo;
+    import { sessionInfo } from './store';
+    import Navbar from './Navbar.svelte';
+
 
     let fileinput;
     let title;
-
     
     async function addPostTitleToTable(uuid) {
         const { data, error } = await supabase
@@ -27,7 +27,7 @@
         addPostTitleToTable(myuuid);
 
         let image = e.target.files[0];
-        let upload_path = sessionInfo.user.id + "/" + myuuid;
+        let upload_path = ($sessionInfo)['user'].id + "/" + myuuid;
         
         const { data, error } = await supabase
             .storage
@@ -43,6 +43,7 @@
 </script>
 
 <div>
+    <Navbar />
     <input class="titleTextBox" bind:value={title}>
     <div class="uploadLabel" on:click={()=>{fileinput.click();}}  on:keydown={()=>{fileinput.click();}} > Click here to upload an image </div>
     <input style="display:none" type="file" accept=".jpg, .jpeg, .png" on:change={(e)=>onFileSelected(e)} bind:this={fileinput} >

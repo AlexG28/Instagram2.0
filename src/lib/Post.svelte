@@ -3,7 +3,6 @@
     import { supabase } from "../supabaseClient";
 
     export let imageName;
-    export let sessionInfo;
     
     let posterUsername;
     let likes;
