@@ -1,25 +1,46 @@
 <script>
-
-    import { supabase } from '../supabaseClient'
-
-    export let loggedIn = false
-
-    export let sessionInfo
+    import { supabase } from '../supabaseClient' 
+    import { loggedIn, sessionInfo } from './store'
+    import {push} from 'svelte-spa-router'
 
     let email = ""
     let password = ""
 
     async function signUp() {
         
-        let { data, error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
             email: email,
             password: password
         })
-
+        
         if (error){
             console.log(error)
-        } else{
-            alert("Please confirm your email")
+        }
+
+        sessionInfo.set(data.session)
+        loggedIn.set(true)
+        
+        console.log("The session infoes are: \n")
+        console.log(sessionInfo)
+        console.log($sessionInfo)
+        
+        addUserToTable()
+
+        push("/")
+    }
+
+    async function addUserToTable() {
+        const { data, error } = await supabase
+            .from('users')
+            .insert([
+                {
+                    'id': ($sessionInfo)['user'].id, 
+                    'created_at': ((new Date()).toISOString()).toLocaleString()
+                }
+            ])
+
+        if (error) {
+            console.log(error)
         }
     }
 
@@ -34,10 +55,12 @@
             alert("Invalid login credentials")
 
         } else{
-            sessionInfo = data
+            sessionInfo.set(data.session)
             email = ""
             password = ""
-            loggedIn = true
+            loggedIn.set(true)
+
+            push("/")
         }
     }
 
