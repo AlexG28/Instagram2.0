@@ -25,10 +25,5 @@ dist-ssr
 
 .env
 
-<<<<<<< HEAD
-/cypress/screenshots
-/cypress/videos
-=======
 cypress/videos
 cypress/screenshots
->>>>>>> 4401d49ae23defeb88b15d7b4cd10300dc734e9c
