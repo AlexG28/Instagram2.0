@@ -8,7 +8,9 @@
     let likes;
     let imageValue = null;
     let description = null
-    
+    let postID
+
+
     const likePost = () => {
       likes += 1
     }
@@ -21,7 +23,11 @@
         .limit(1)
 
       if (error) throw error
-      
+    
+      postID = data[0].id
+
+      getLikes(postID);
+
       likes = data[0].likes
       posterUsername = data[0].title
       description = data[0].description
@@ -52,6 +58,15 @@
           alert(error.message)
         }
       }
+  }
+
+  async function getLikes(postID) {
+    const { count, error } = await supabase
+      .from('likes')
+      .select('*', { count: 'exact', head: true })
+      .eq('post_id', postID)
+
+    likes = count
   }
 
   onMount(() => {
