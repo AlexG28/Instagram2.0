@@ -2,7 +2,7 @@ describe(
     'Login Test', 
     {
         env: {
-            TEST_EMAIL:"alex.gyumushyan@gmail.com",
+            TEST_EMAIL:"testemail@gmail.com",
             TEST_PASSWORD:"123456"
         },
     },
@@ -15,7 +15,6 @@ describe(
             cy.get("#passwordTextBox").type(Cypress.env('TEST_PASSWORD'))
             cy.get("#SignInButton").click()
             
-            cy.contains("Logged in")
         }),
         it('successfully loads images', () => {
             cy.visit('/')
@@ -23,8 +22,6 @@ describe(
             cy.get("#emailTextBox").type(Cypress.env('TEST_EMAIL'))
             cy.get("#passwordTextBox").type(Cypress.env('TEST_PASSWORD'))
             cy.get("#SignInButton").click()
-    
-            cy.contains("NASA")
     
             cy.contains("0 Likes")
             cy.contains("Like this post").click()

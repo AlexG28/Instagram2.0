@@ -3,11 +3,11 @@
     import { supabase } from "../supabaseClient";
 
     export let imageName;
-    export let sessionInfo;
     
     let posterUsername;
     let likes;
     let imageValue = null;
+    let description = null
     
     const likePost = () => {
       likes += 1
@@ -15,7 +15,7 @@
 
     async function getMetadata() {
       const {data, error} = await supabase
-        .from('Posts')
+        .from('posts')
         .select('*')
         .eq('imageID', imageName)
         .limit(1)
@@ -24,6 +24,7 @@
       
       likes = data[0].likes
       posterUsername = data[0].title
+      description = data[0].description
     }
 
     const getImage = async () => {
@@ -32,7 +33,7 @@
         const { data: blob, error } = await supabase
           .storage
           .from('images')
-          .download(sessionInfo.user.id + "/" + imageName)
+          .download("postImages" + "/" + imageName)
 
         if (error) throw error
 
@@ -76,6 +77,12 @@
         <button class="likeButton" on:click={likePost}>
             Like this post
         </button>
+
+        <h2>
+          {#if description != null}
+            {description}
+          {/if}
+        </h2>
 
     </div>
 </div>
