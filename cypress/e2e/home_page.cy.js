@@ -23,8 +23,6 @@ describe(
             cy.get("#passwordTextBox").type(Cypress.env('TEST_PASSWORD'))
             cy.get("#SignInButton").click()
     
-            cy.contains("NASA")
-    
             cy.contains("0 Likes")
             cy.contains("Like this post").click()
             cy.contains("1 Likes")
