@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { supabase } from "../supabaseClient";
+    import { sessionInfo } from "./store";
 
     export let imageName;
     
@@ -9,10 +10,24 @@
     let imageValue = null;
     let description = null
     let postID
+    let currentUserLiked
 
-
-    const likePost = () => {
+    async function likePost(){
       likes += 1
+      currentUserLiked = true
+
+      console.log("the post ID we just liked: " + postID)
+
+      const {data, error} = await supabase
+        .from('likes')
+        .insert([
+            {
+                'user_id': $sessionInfo['user'].id,
+                'post_id': postID
+            }
+        ])
+
+
     }
 
     async function getMetadata() {
@@ -26,7 +41,7 @@
     
       postID = data[0].id
 
-      getLikes(postID);
+      processLikes(postID);
 
       likes = data[0].likes
       posterUsername = data[0].title
@@ -60,13 +75,21 @@
       }
   }
 
-  async function getLikes(postID) {
-    const { count, error } = await supabase
+  async function processLikes(postID) {
+    const { data, error } = await supabase
       .from('likes')
-      .select('*', { count: 'exact', head: true })
+      .select('*')
       .eq('post_id', postID)
 
-    likes = count
+    likes = data.length
+
+    if (data.find((element) => element.user_id == $sessionInfo['user'].id)){
+      console.log("user indeed liked this!!!!!!!!!!!")
+      currentUserLiked = true
+    } else {
+      console.log("nonononononononono")
+      currentUserLiked = false
+    }
   }
 
   onMount(() => {
@@ -89,9 +112,17 @@
             {likes} Likes
         </h3>
     
-        <button class="likeButton" on:click={likePost}>
-            Like this post
-        </button>
+        {#if !currentUserLiked}
+          <button class="likeButton" on:click={likePost}>
+              Like this post
+          </button>
+        {:else}
+          <button class="likedButton">
+            Liked
+          </button>
+        {/if}
+
+
 
         <h2>
           {#if description != null}
@@ -133,7 +164,7 @@
         padding-right: 1rem;
     }
 
-    .likeButton{
+    .likeButton, .likedButton {
         display: inline-block;
         padding: 1rem 1rem;
         vertical-align: middle;
@@ -144,6 +175,8 @@
         font-size: 1.5em;
 
         cursor: pointer;
+
+        /* background-color: var(--button-colour, red); */
     }
 
     .likeButton:hover{
