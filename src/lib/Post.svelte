@@ -26,8 +26,23 @@
                 'post_id': postID
             }
         ])
+    }
 
+    async function unlikePost() {
+      likes -= 1
+      currentUserLiked = false
 
+      console.log("the post ID we just liked: " + postID)
+
+      const { error } = await supabase
+        .from('likes')
+        .delete()
+        .eq('post_id', postID)
+        .eq('user_id', $sessionInfo['user'].id)
+
+      if (error) {
+        console.error(error)
+      }
     }
 
     async function getMetadata() {
@@ -117,7 +132,7 @@
               Like this post
           </button>
         {:else}
-          <button class="likedButton">
+          <button class="likedButton" on:click={unlikePost}>
             Liked
           </button>
         {/if}
