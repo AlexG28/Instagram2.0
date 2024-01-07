@@ -17,7 +17,7 @@ Instagram 2.0 is a clone of the Instagram website
 
 ## Try it out
 
-To run this website on your computer, clone this repo and run  `npm install` followed by `npm run dev`.
+To run this website on your computer, clone this repo and run  `npm install .` followed by `npm run dev`.
 
 ## Run unit tests
 To run the e2e unit tests, run `npm run ci`
