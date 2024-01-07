@@ -1,10 +1,11 @@
 <script>
     import { supabase } from "../supabaseClient";
     import { onMount } from "svelte";
-    import {push} from 'svelte-spa-router'
+    import { push } from 'svelte-spa-router'
     import { loggedIn, sessionInfo } from './store'
     import Post from "./Post.svelte";
     import Navbar from "../components/Navbar.svelte";
+
 
     onMount(() => {
         if (!($loggedIn)){
@@ -12,27 +13,17 @@
         } 
     })
 
-    async function getImageIDsFrompostsTable(){
-        const { data, error } = await supabase
-        .from('posts')
-        .select('imageID')
-        if (error) throw error 
-        return data 
-    }
+    async function getListOfPosts() {
+        const {data, error} = await supabase
+            .from('posts')
+            .select('*');
 
-    async function getImageNameList() {
-        const imageNames = []
-        let postIDs = await getImageIDsFrompostsTable()
-        console.log("PostIDs: ")
-        console.log(postIDs)
-
-        if (postIDs) {
-            for (let i = 0; i < postIDs.length; i++){
-            imageNames.push(postIDs[i].imageID)
-            }
+        if (error){
+            console.error(error)
         }
-
-        return imageNames
+        
+        data.sort((a, b) => a.created_at - b.created_at).reverse()
+        return data
     }
 </script>
 
@@ -46,9 +37,9 @@
     
     <div class="postPanel">
         {#if $sessionInfo != null}
-            {#await getImageNameList() then value} 
-                {#each value as fileName}
-                    <Post imageName={fileName} />
+            {#await getListOfPosts() then value} 
+                {#each value as postInfo}
+                    <Post postInfo={postInfo} />
                 {/each}
             {/await} 
         {/if}

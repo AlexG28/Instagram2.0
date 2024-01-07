@@ -1,63 +1,104 @@
 <script>
     import { onMount } from "svelte";
     import { supabase } from "../supabaseClient";
+    import { sessionInfo } from "./store";
+    
+    export let postInfo;
 
-    export let imageName;
-    
-    let posterUsername;
-    let likes;
-    let imageValue = null;
+    let posterUsername
+    let likes
+    let imageValue = null
     let description = null
-    
-    const likePost = () => {
+    let postID
+    let currentUserLiked
+
+
+    async function likePost(){
       likes += 1
+      currentUserLiked = true
+
+      const {data, error} = await supabase
+        .from('likes')
+        .insert([
+            {
+                'user_id': $sessionInfo['user'].id,
+                'post_id': postID
+            }
+        ])
+    }
+
+    async function unlikePost() {
+      likes -= 1
+      currentUserLiked = false
+
+      const { error } = await supabase
+        .from('likes')
+        .delete()
+        .eq('post_id', postID)
+        .eq('user_id', $sessionInfo['user'].id)
+
+      if (error) {
+        console.error(error)
+      }
     }
 
     async function getMetadata() {
-      const {data, error} = await supabase
-        .from('posts')
-        .select('*')
-        .eq('imageID', imageName)
-        .limit(1)
-
-      if (error) throw error
+      postID = postInfo.id
+      posterUsername = postInfo.title
+      description = postInfo.description
       
-      likes = data[0].likes
-      posterUsername = data[0].title
-      description = data[0].description
+      processLikes(postID);
     }
 
-    const getImage = async () => {
-      try {
+    async function processLikes(postID) {
+      const { data, error } = await supabase
+        .from('likes')
+        .select('*')
+        .eq('post_id', postID)
 
-        const { data: blob, error } = await supabase
-          .storage
-          .from('images')
-          .download("postImages" + "/" + imageName)
+      if (error){
+        console.error(error)
+      }
 
-        if (error) throw error
+      likes = data.length
 
-        if (blob) {
-          let imageFile = new File([blob], "imageFile1", { type: blob.type })
-          
-          const fr = new FileReader(); 
-          fr.readAsDataURL(imageFile)
-          fr.addEventListener('load', ()=>{
-            imageValue = fr.result
-          })
-        }
+      if (data.find((element) => element.user_id == $sessionInfo['user'].id)){
+        currentUserLiked = true
+      } else {
+        currentUserLiked = false
+      }
+    }
+  
+  
+    async function getImage() {
+        try {
+          const { data: blob, error } = await supabase
+            .storage
+            .from('images')
+            .download("postImages" + "/" + postInfo.imageID)
 
-      } catch (error){
-        if (error instanceof Error){
-          alert(error.message)
+          if (error) throw error
+
+          if (blob) {
+            let imageFile = new File([blob], "imageFile1", { type: blob.type })
+            
+            const fr = new FileReader(); 
+            fr.readAsDataURL(imageFile)
+            fr.addEventListener('load', ()=>{
+              imageValue = fr.result
+            })
+          }
+
+        } catch (error){
+          if (error instanceof Error){
+            alert(error.message)
+          }
         }
       }
-  }
-
-  onMount(() => {
-    getImage()
-    getMetadata()
-  })
+    onMount(() => {
+      getImage()
+      getMetadata()
+    })
 
 </script>
 
@@ -74,9 +115,15 @@
             {likes} Likes
         </h3>
     
-        <button class="likeButton" on:click={likePost}>
-            Like this post
-        </button>
+        {#if !currentUserLiked}
+          <button class="likeButton" on:click={likePost}>
+              Like this post
+          </button>
+        {:else}
+          <button class="likedButton" on:click={unlikePost}>
+            Liked
+          </button>
+        {/if}
 
         <h2>
           {#if description != null}
@@ -118,7 +165,7 @@
         padding-right: 1rem;
     }
 
-    .likeButton{
+    .likeButton, .likedButton {
         display: inline-block;
         padding: 1rem 1rem;
         vertical-align: middle;
@@ -129,6 +176,8 @@
         font-size: 1.5em;
 
         cursor: pointer;
+
+        /* background-color: var(--button-colour, red); */
     }
 
     .likeButton:hover{
