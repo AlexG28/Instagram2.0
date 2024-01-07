@@ -2,21 +2,20 @@
     import { onMount } from "svelte";
     import { supabase } from "../supabaseClient";
     import { sessionInfo } from "./store";
-
-    export let imageName;
     
-    let posterUsername;
-    let likes;
-    let imageValue = null;
+    export let postInfo;
+
+    let posterUsername
+    let likes
+    let imageValue = null
     let description = null
     let postID
     let currentUserLiked
 
+
     async function likePost(){
       likes += 1
       currentUserLiked = true
-
-      console.log("the post ID we just liked: " + postID)
 
       const {data, error} = await supabase
         .from('likes')
@@ -32,8 +31,6 @@
       likes -= 1
       currentUserLiked = false
 
-      console.log("the post ID we just liked: " + postID)
-
       const { error } = await supabase
         .from('likes')
         .delete()
@@ -46,71 +43,62 @@
     }
 
     async function getMetadata() {
-      const {data, error} = await supabase
-        .from('posts')
-        .select('*')
-        .eq('imageID', imageName)
-        .limit(1)
-
-      if (error) throw error
-    
-      postID = data[0].id
-
+      postID = postInfo.id
+      posterUsername = postInfo.title
+      description = postInfo.description
+      
       processLikes(postID);
-
-      likes = data[0].likes
-      posterUsername = data[0].title
-      description = data[0].description
     }
 
-    const getImage = async () => {
-      try {
+    async function processLikes(postID) {
+      const { data, error } = await supabase
+        .from('likes')
+        .select('*')
+        .eq('post_id', postID)
 
-        const { data: blob, error } = await supabase
-          .storage
-          .from('images')
-          .download("postImages" + "/" + imageName)
+      if (error){
+        console.error(error)
+      }
 
-        if (error) throw error
+      likes = data.length
 
-        if (blob) {
-          let imageFile = new File([blob], "imageFile1", { type: blob.type })
-          
-          const fr = new FileReader(); 
-          fr.readAsDataURL(imageFile)
-          fr.addEventListener('load', ()=>{
-            imageValue = fr.result
-          })
-        }
+      if (data.find((element) => element.user_id == $sessionInfo['user'].id)){
+        currentUserLiked = true
+      } else {
+        currentUserLiked = false
+      }
+    }
+  
+  
+    async function getImage() {
+        try {
+          const { data: blob, error } = await supabase
+            .storage
+            .from('images')
+            .download("postImages" + "/" + postInfo.imageID)
 
-      } catch (error){
-        if (error instanceof Error){
-          alert(error.message)
+          if (error) throw error
+
+          if (blob) {
+            let imageFile = new File([blob], "imageFile1", { type: blob.type })
+            
+            const fr = new FileReader(); 
+            fr.readAsDataURL(imageFile)
+            fr.addEventListener('load', ()=>{
+              imageValue = fr.result
+            })
+          }
+
+        } catch (error){
+          if (error instanceof Error){
+            alert(error.message)
+          }
         }
       }
-  }
-
-  async function processLikes(postID) {
-    const { data, error } = await supabase
-      .from('likes')
-      .select('*')
-      .eq('post_id', postID)
-
-    likes = data.length
-
-    if (data.find((element) => element.user_id == $sessionInfo['user'].id)){
-      console.log("user indeed liked this!!!!!!!!!!!")
-      currentUserLiked = true
-    } else {
-      console.log("nonononononononono")
-      currentUserLiked = false
-    }
-  }
-
-  onMount(() => {
-    getImage()
-    getMetadata()
-  })
+    onMount(() => {
+      getImage()
+      getMetadata()
+    })
 
 </script>
 
@@ -136,8 +124,6 @@
             Liked
           </button>
         {/if}
-
-
 
         <h2>
           {#if description != null}
