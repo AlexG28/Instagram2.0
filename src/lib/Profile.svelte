@@ -8,6 +8,7 @@
 
 
     let imageURLs = []
+    let postList = []
 
     async function downloadImageFiles(data){
         let imageBlobs = []
@@ -45,9 +46,9 @@
 
     async function getUserUploadedPosts() {
         const {data, error} = await supabase
-        .from('posts')
-        .select('*')
-        .eq('user_id', $sessionInfo['user'].id)
+            .from('posts')
+            .select('*')
+            .eq('user_id', $sessionInfo['user'].id)
         
         if (error){
             console.error(error)
@@ -59,19 +60,19 @@
     
     
     async function getUserPhotos() {
-        const data = await getUserUploadedPosts()
+        postList = await getUserUploadedPosts()
 
-        if (data.length === 0){
+        if (postList.length === 0){
             return null
         }
 
-        const imageBlobs = await downloadImageFiles(data)
+        const imageBlobs = await downloadImageFiles(postList)
         const unpackedImages = await unpackImageFiles(imageBlobs)
         
         let tempImageURLs = []
         for(let i = 0; i < unpackedImages.length; i++){
             tempImageURLs.push({
-                postID: data[i].id, 
+                postID: postList[i].id, 
                 imageURL: unpackedImages[i]
             })
         }
@@ -79,8 +80,42 @@
     }
 
 
-    async function handleClick(imageID) {
-        console.log(imageID)
+    async function deleteImageFile(imageID){
+        const { data, error } = await supabase
+            .storage
+            .from('images')
+            .remove(['postImages/' + imageID])
+        
+        if (error){
+            console.error(error)
+        }
+    }
+
+    async function deletePost(postID) {
+        const { data, error } = await supabase
+            .from('posts')
+            .delete()
+            .eq('id', postID)
+
+        if (error) {
+            console.error(error)
+        }
+    }
+
+
+
+    async function handleClick(postID) {
+        const userConfirmed = confirm("Do you want to delete this image?");
+        
+        if (userConfirmed){
+            let postToDelete = postList.find(elem => elem.id === postID)
+
+            console.log(postToDelete)
+
+            deleteImageFile(postToDelete.imageID)
+            deletePost(postToDelete.id)
+            
+        }
     }
 
 
