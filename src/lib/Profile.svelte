@@ -9,7 +9,6 @@
 
     let imageURLs = []
 
-
     async function downloadImageFiles(data){
         let imageBlobs = []
         for (const elem of data){
@@ -60,20 +59,34 @@
     
     
     async function getUserPhotos() {
-        let data = await getUserUploadedPosts()
+        const data = await getUserUploadedPosts()
 
         if (data.length === 0){
             return null
         }
 
         const imageBlobs = await downloadImageFiles(data)
-        imageURLs = await unpackImageFiles(imageBlobs)
-
-        console.log(imageURLs.length)        
+        const unpackedImages = await unpackImageFiles(imageBlobs)
+        
+        let tempImageURLs = []
+        for(let i = 0; i < unpackedImages.length; i++){
+            tempImageURLs.push({
+                postID: data[i].id, 
+                imageURL: unpackedImages[i]
+            })
+        }
+        imageURLs = tempImageURLs
     }
+
+
+    async function handleClick(imageID) {
+        console.log(imageID)
+    }
+
 
     onMount(()=> {
         getUserPhotos()
+
     })
 
 </script>
@@ -88,7 +101,7 @@
     {:else}
         <div class="imageGrid">
             {#each imageURLs as image }
-                <img src={image} class="image" alt="Loading" />
+                <img src={image.imageURL} class="image" alt="Loading" on:click={() => handleClick(image.postID)} />
             {/each}
         </div>
         
