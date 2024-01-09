@@ -101,6 +101,17 @@
             console.error(error)
         }
     }
+    
+    async function deletePostLikes(postID) {
+        const { data, error } = await supabase
+            .from('likes')
+            .delete()
+            .eq('post_id', postID)
+            
+        if (error) {
+            console.error(error)
+        }
+    }
 
 
 
@@ -114,7 +125,7 @@
 
             deleteImageFile(postToDelete.imageID)
             deletePost(postToDelete.id)
-            
+            deletePostLikes(postToDelete.id)
         }
     }
 
