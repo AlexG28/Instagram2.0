@@ -60,6 +60,7 @@
     
     
     async function getUserPhotos() {
+        imageURLs = []
         postList = await getUserUploadedPosts()
 
         if (postList.length === 0){
@@ -126,13 +127,22 @@
             deleteImageFile(postToDelete.imageID)
             deletePost(postToDelete.id)
             deletePostLikes(postToDelete.id)
+
+            let testone = []
+
+            for (let i = 0; i < imageURLs.length; i++){
+                if (imageURLs[i].postID != postID) {
+                    testone.push(imageURLs[i])
+                }
+            }
+
+            imageURLs = testone
         }
     }
 
 
     onMount(()=> {
         getUserPhotos()
-
     })
 
 </script>
