@@ -2,9 +2,7 @@
     import Navbar from "../components/Navbar.svelte";
     import { supabase } from "../supabaseClient";
     import { onMount } from "svelte";
-    import { push } from 'svelte-spa-router'
-    import { loggedIn, sessionInfo } from "./store";
-    import Post from "./Post.svelte";
+    import { sessionInfo } from "./store";
 
 
     let imageURLs = []
