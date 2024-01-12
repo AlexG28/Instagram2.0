@@ -8,11 +8,13 @@
   import Home from "./lib/Home.svelte"
   import SignIn from "./lib/SignIn.svelte"
   import Upload from "./lib/Upload.svelte"
+  import Profile from "./lib/Profile.svelte";
 
   let routes = {
     "/": Home,
     "/signin": SignIn,
     "/upload": Upload,
+    "/profile": Profile,
   }
 
 
