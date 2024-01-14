@@ -9,10 +9,6 @@ describe(
     
     ()=>{  
         it('can successfully login', ()=>{
-            // cy.intercept('POST', '**/auth/v1/token?grant_type=password').as('authRequest')
-            
-            cy.log("tesststststss")
-
             cy.intercept('POST', '**/auth/v1/token?grant_type=password', (req) => {
                 req.reply({
                     statusCode: 200,
@@ -21,21 +17,13 @@ describe(
             
             }).as('authRequest')
 
-
             cy.visit('/#/signin')
             
-            cy.get("#emailTextBox").type(Cypress.env('TEST_EMAIL'))
-            cy.get("#passwordTextBox").type(Cypress.env('TEST_PASSWORD'))
+            cy.get("#emailTextBox").type("anyemail@gmail.com")
+            cy.get("#passwordTextBox").type("randompassword")
             cy.get("#SignInButton").click()        
-            
-
 
             cy.wait('@authRequest').its('response.statusCode').should('eq', 200)
-            
-            // cy.get("#SignInButton")
-            // https://nnhiufnpncvtpbvwlgsc.supabase.co/auth/v1/token?grant_type=password
-
-
         })
         
         it('can alert wrong login info', () => {
