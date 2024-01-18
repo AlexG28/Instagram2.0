@@ -5,8 +5,8 @@
     import { sessionInfo } from "./store";
 
 
-    let followers = 384
-    let following = 763
+    let followers = 0
+    let following = 0
 
     let imageURLs = []
     let postList = []
@@ -142,9 +142,9 @@
 
     async function getFollowerInfo(){
         const { data, error } = await supabase
-            .from('following')
+            .from('follow')
             .select('*')
-            .eq('followed_user_id', $sessionInfo['user'].id)
+            .eq('follower_id', $sessionInfo['user'].id)
 
         if (error) {
             console.error(error)
@@ -155,9 +155,9 @@
     
     async function getFollowingInfo(){
         const { data, error } = await supabase
-            .from('following')
+            .from('follow')
             .select('*')
-            .eq('follower_user_id', $sessionInfo['user'].id)
+            .eq('followed_id', $sessionInfo['user'].id)
         
         if (error) {
             console.error(error)
@@ -169,6 +169,9 @@
 
     onMount(()=> {
         getUserPhotos()
+
+        getFollowerInfo()
+        getFollowingInfo()
     })
 
 </script>
