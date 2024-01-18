@@ -5,6 +5,9 @@
     import { sessionInfo } from "./store";
 
 
+    let followers = 384
+    let following = 763
+
     let imageURLs = []
     let postList = []
 
@@ -113,7 +116,6 @@
     }
 
 
-
     async function handleClick(postID) {
         const userConfirmed = confirm("Do you want to delete this image?");
         
@@ -138,6 +140,32 @@
         }
     }
 
+    async function getFollowerInfo(){
+        const { data, error } = await supabase
+            .from('following')
+            .select('*')
+            .eq('followed_user_id', $sessionInfo['user'].id)
+
+        if (error) {
+            console.error(error)
+        }
+
+        following = data.length;
+    }
+    
+    async function getFollowingInfo(){
+        const { data, error } = await supabase
+            .from('following')
+            .select('*')
+            .eq('follower_user_id', $sessionInfo['user'].id)
+        
+        if (error) {
+            console.error(error)
+        }
+        
+        followers = data.length
+    }
+
 
     onMount(()=> {
         getUserPhotos()
@@ -148,6 +176,15 @@
 
 <div>
     <Navbar />
+
+    <h2>
+        {followers} Followers
+    </h2>
+    <h2>
+        {following} Following
+    </h2>
+
+
     <h2>Your uploads</h2>
 
     {#if imageURLs.length === 0 }
