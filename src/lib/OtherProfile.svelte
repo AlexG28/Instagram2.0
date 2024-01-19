@@ -4,8 +4,11 @@
     import { supabase } from "../supabaseClient";
     import { onMount } from "svelte";
     import { sessionInfo } from "./store";
+    import {location} from 'svelte-spa-router'
  
-    export let id
+    let id = ($location).substring(1)
+    console.log(id)
+
 
     let followers = 0
     let following = 0
@@ -80,6 +83,11 @@
 <div>
 
     <Navbar />
+    
+    <h2>
+        This is some test shit hahahah {id}
+    </h2>
+
 
     <h2>
         {followers} Followers

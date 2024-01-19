@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import { supabase } from "../supabaseClient";
     import { sessionInfo } from "./store";
+    import { push } from "svelte-spa-router";
     
     export let postInfo;
 
@@ -68,7 +69,10 @@
         currentUserLiked = false
       }
     }
-  
+    
+    async function goToPosterProfile() {
+      push("/" + "3804f388-686a-4f35-94aa-5a448267287d") // change this properly
+    }
   
     async function getImage() {
         try {
@@ -105,7 +109,10 @@
 
 <div class="post">
     <h2 class="postUsername" >
-        {posterUsername}
+        <button on:click={goToPosterProfile}  >
+          {posterUsername}
+        </button>
+      
     </h2>
     
     <img src={imageValue} class="postPicture" alt="Loading" />
