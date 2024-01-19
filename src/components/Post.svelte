@@ -1,7 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { supabase } from "../supabaseClient";
-    import { sessionInfo } from "./store";
+    import { sessionInfo } from "../lib/store";
     import { push } from "svelte-spa-router";
     
     export let postInfo;
@@ -12,6 +12,7 @@
     let description = null
     let postID
     let currentUserLiked
+    let posterID
 
 
     async function likePost(){
@@ -47,6 +48,7 @@
       postID = postInfo.id
       posterUsername = postInfo.title
       description = postInfo.description
+      posterID = postInfo.user_id
       
       processLikes(postID);
     }
@@ -71,7 +73,7 @@
     }
     
     async function goToPosterProfile() {
-      push("/" + "3804f388-686a-4f35-94aa-5a448267287d") // change this properly
+      push("/" + posterID) // change this properly
     }
   
     async function getImage() {

@@ -1,6 +1,6 @@
 <script>
     import Navbar from "../components/Navbar.svelte";
-    import Post from "./Post.svelte";
+    import Post from "../components/Post.svelte";
     import { supabase } from "../supabaseClient";
     import { onMount } from "svelte";
     import { sessionInfo } from "./store";
