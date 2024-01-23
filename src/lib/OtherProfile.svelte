@@ -4,7 +4,7 @@
     import { supabase } from "../supabaseClient";
     import { onMount } from "svelte";
     import { sessionInfo } from "./store";
-    import {location} from 'svelte-spa-router'
+    import { location } from 'svelte-spa-router'
  
     let id = ($location).substring(1)
     console.log(id)
@@ -55,7 +55,7 @@
             console.error(error)
         }
 
-        following = data.length;
+        following = data.length
     }
     
     async function getFollowingInfo(){
@@ -71,6 +71,22 @@
         followers = data.length
     }
 
+    
+    async function unfollow(){
+        followers -= 1
+
+        const { data, error } = await supabase
+            .from("follow")
+            .delete()
+            .eq('follower_id', $sessionInfo['user'].id)
+            .eq('followed_id', id)
+
+        if (error){
+            console.error(error)
+        }
+    }
+
+
     onMount(()=> {
         getFollowerInfo()
         getFollowingInfo()
@@ -84,11 +100,9 @@
 
     <Navbar />
     
-    <h2>
-        This is some test shit hahahah {id}
+    <h2> 
+        {$sessionInfo['user'].id} has: 
     </h2>
-
-
     <h2>
         {followers} Followers
     </h2>
