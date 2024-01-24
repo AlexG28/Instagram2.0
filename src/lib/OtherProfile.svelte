@@ -9,6 +9,8 @@
     let id = ($location).substring(1)
     console.log(id)
 
+    let followed = false
+
 
     let followers = 0
     let following = 0
@@ -30,19 +32,6 @@
         }).reverse()
 
         return data
-    }
-
-    async function followUser(){
-        followers += 1
-
-        const { data, error } = await supabase
-            .from("follow")
-            .insert([
-                {
-                    'follower_id': $sessionInfo['user'].id,
-                    'followed_id': id
-                }
-            ])
     }
 
     async function getFollowerInfo(){
@@ -71,10 +60,24 @@
         followers = data.length
     }
 
-    
-    async function unfollow(){
-        followers -= 1
+    async function followUser(){
+        followers += 1
+        followed = true
+        
+        const { data, error } = await supabase
+            .from("follow")
+            .insert([
+                {
+                    'follower_id': $sessionInfo['user'].id,
+                    'followed_id': id
+                }
+            ])
+    }
 
+    
+    async function unfollowUser(){
+        followers -= 1
+        followed = false
         const { data, error } = await supabase
             .from("follow")
             .delete()
@@ -83,6 +86,20 @@
 
         if (error){
             console.error(error)
+        }
+    }
+
+    async function checkIfFollowed() {
+        const { data, error } = await supabase
+            .from("follow")
+            .select("*")
+            .eq('follower_id', $sessionInfo['user'].id)
+            .eq('followed_id', id)
+
+        if (data.length > 0){
+            followed = true
+        } else{
+            followed = false
         }
     }
 
@@ -110,9 +127,17 @@
         {following} Following
     </h2>
 
-    <button  on:click={followUser}> 
-        Follow 
-    </button>
+    {#if followed == true}
+        <button  on:click={unfollowUser}> 
+            Unfollow 
+        </button>
+    {:else}
+
+        <button  on:click={followUser}> 
+            Follow 
+        </button>
+    {/if}
+
     
     <div class="postPanel">
         {#if $sessionInfo != null}
