@@ -4,7 +4,7 @@
     import { supabase } from "../supabaseClient";
     import { onMount } from "svelte";
     import { sessionInfo } from "./store";
-    import { location } from 'svelte-spa-router'
+    import { location, push } from 'svelte-spa-router'
  
     let id = ($location).substring(1)
     console.log(id)
@@ -63,7 +63,7 @@
     async function followUser(){
         followers += 1
         followed = true
-        
+
         const { data, error } = await supabase
             .from("follow")
             .insert([
@@ -103,10 +103,19 @@
         }
     }
 
+    async function checkIfCurrentUserProfile() {
+        if (id == $sessionInfo['user'].id) {
+            push("/profile")
+        }
+    }
+
+
 
     onMount(()=> {
+        checkIfCurrentUserProfile()
         getFollowerInfo()
         getFollowingInfo()
+        checkIfFollowed()
     })
 
 
