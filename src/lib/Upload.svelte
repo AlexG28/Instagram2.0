@@ -30,7 +30,7 @@
     async function submitPost() {
         let myuuid = uuidv4();
         addPostTitleToTable(myuuid);
-                let upload_path = 'postImages' + "/" + myuuid;
+        let upload_path = 'postImages' + "/" + myuuid;
 
         console.log("The upload path is: " + upload_path)
         
