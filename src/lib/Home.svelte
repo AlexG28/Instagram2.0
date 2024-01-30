@@ -3,7 +3,7 @@
     import { onMount } from "svelte";
     import { push } from 'svelte-spa-router'
     import { loggedIn, sessionInfo } from './store'
-    import Post from "./Post.svelte";
+    import Post from "../components/Post.svelte";
     import Navbar from "../components/Navbar.svelte";
 
 
