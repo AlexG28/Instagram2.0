@@ -110,13 +110,13 @@
 
 
 <div class="post">
-    <h2 class="postUsername" >
-        <button on:click={goToPosterProfile}  >
+    <h4>
+      <button class="postUsername labelButton" on:click={goToPosterProfile}>
           {posterUsername}
-        </button>
-      
-    </h2>
-    
+      </button>
+    </h4>
+  
+
     <img src={imageValue} class="postPicture" alt="Loading" />
     
     <div class="likebar">
@@ -152,12 +152,6 @@
         margin: 3rem 0rem;
     }
 
-    .postUsername{
-        text-align: left;
-        margin: 20px;
-        font-size: 2.5em;
-    }
-
     .postPicture{
         width: 700px;
         border-radius: 8px;
@@ -174,7 +168,7 @@
         padding-right: 1rem;
     }
 
-    .likeButton, .likedButton {
+    .likeButton, .likedButton, .labelButton {
         display: inline-block;
         padding: 1rem 1rem;
         vertical-align: middle;
@@ -189,7 +183,7 @@
         /* background-color: var(--button-colour, red); */
     }
 
-    .likeButton:hover{
+    .likeButton:hover,  .labelButton:hover {
         background-image: linear-gradient(45deg, #f3ec78, #af4261);
         color: black;
     }
